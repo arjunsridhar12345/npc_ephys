@@ -1,4 +1,5 @@
 """Tools for working with Open Ephys raw data files."""
+
 from __future__ import annotations
 
 import dataclasses
@@ -57,7 +58,9 @@ def get_sync_messages_data(
             "start": start(line),
             "rate": rate(line),
         }
-        for line in npc_io.from_pathlike(sync_messages_path).read_text().splitlines()[1:]
+        for line in npc_io.from_pathlike(sync_messages_path)
+        .read_text()
+        .splitlines()[1:]
     }
 
 
@@ -85,24 +88,20 @@ class EphysDeviceInfo:
 
 class EphysTimingInfo(Protocol):
     @property
-    def device(self) -> EphysDeviceInfo:
-        ...
+    def device(self) -> EphysDeviceInfo: ...
 
     @property
-    def sampling_rate(self) -> float:
-        ...
+    def sampling_rate(self) -> float: ...
 
     """Samples per second"""
 
     @property
-    def start_time(self) -> float:
-        ...
+    def start_time(self) -> float: ...
 
     """Sec, relative to start of experiment"""
 
     @property
-    def stop_time(self) -> float:
-        ...
+    def stop_time(self) -> float: ...
 
     """Sec, relative to start of experiment"""
 
@@ -140,7 +139,9 @@ class EphysTimingInfoOnSync:
         return self.start_time + (self.device.num_samples / self.sampling_rate)
 
 
-def read_array_range_from_npy(path: npc_io.PathLike, _range: int | slice) -> npt.NDArray:
+def read_array_range_from_npy(
+    path: npc_io.PathLike, _range: int | slice
+) -> npt.NDArray:
     """Read specific range without downloading entire array. For 1-D array only, currently."""
     if not isinstance(_range, slice):
         _range = slice(_range, _range + 1)
@@ -283,7 +284,8 @@ def get_ephys_data(
             (
                 _
                 for _ in get_merged_oebin_file(
-                    next(npc_io.from_pathlike(p).glob("*.oebin")) for p in recording_dirs
+                    next(npc_io.from_pathlike(p).glob("*.oebin"))
+                    for p in recording_dirs
                 )["continuous"]
                 if device.name in _["folder_name"]
             ),
@@ -383,10 +385,12 @@ def get_ephys_timing_on_sync(
 
     sync = npc_sync.get_sync_data(sync)
 
-    sync_barcode_times, sync_barcode_ids = npc_ephys.barcodes.extract_barcodes_from_times(
-        on_times=sync.get_rising_edges("barcode_ephys", units="seconds"),
-        off_times=sync.get_falling_edges("barcode_ephys", units="seconds"),
-        total_time_on_line=sync.total_seconds,
+    sync_barcode_times, sync_barcode_ids = (
+        npc_ephys.barcodes.extract_barcodes_from_times(
+            on_times=sync.get_rising_edges("barcode_ephys", units="seconds"),
+            off_times=sync.get_falling_edges("barcode_ephys", units="seconds"),
+            total_time_on_line=sync.total_seconds,
+        )
     )
     if devices and not isinstance(devices, Iterable):
         devices = (devices,)
@@ -470,7 +474,9 @@ def is_valid_ephys_folder(
         return False
     if not is_new_ephys_folder(path):
         return False
-    if min_size_gb is not None and npc_io.get_size_gb(path) < min_size_gb * 1024**3:  # GB
+    if (
+        min_size_gb is not None and npc_io.get_size_gb(path) < min_size_gb * 1024**3
+    ):  # GB
         return False
     return True
 

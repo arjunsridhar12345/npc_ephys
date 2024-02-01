@@ -209,10 +209,12 @@ def _device_helper(
 
 
 def make_units_table_from_spike_interface_ks25(
-    session_or_spikeinterface_data_or_path: str
-    | npc_session.SessionRecord
-    | npc_io.PathLike
-    | npc_ephys.spikeinterface.SpikeInterfaceKS25Data,
+    session_or_spikeinterface_data_or_path: (
+        str
+        | npc_session.SessionRecord
+        | npc_io.PathLike
+        | npc_ephys.spikeinterface.SpikeInterfaceKS25Data
+    ),
     device_timing_on_sync: Iterable[npc_ephys.openephys.EphysTimingInfo],
     include_waveform_arrays: bool = False,
 ) -> pd.DataFrame:
@@ -273,11 +275,19 @@ def make_units_table_from_spike_interface_ks25(
 
 
 def add_electrode_annotations_to_units(
-    units: pd.DataFrame, 
+    units: pd.DataFrame,
     annotated_electrodes: pd.DataFrame,
 ) -> pd.DataFrame:
     """Join units table with tissuecyte electrode locations table and drop redundant columns."""
-    annotation_columns = ["group_name", "channel", "x", "y", "z", "structure", "location"]
+    annotation_columns = [
+        "group_name",
+        "channel",
+        "x",
+        "y",
+        "z",
+        "structure",
+        "location",
+    ]
     if any(col not in annotated_electrodes.columns for col in annotation_columns):
         raise ValueError(
             f"annotated_electrodes must contain all columns {annotation_columns}"
@@ -312,9 +322,7 @@ def add_global_unit_ids(
     return units
 
 
-def good_units(
-    units: pd.DataFrame, qc_column: str = "default_qc"
-) -> pd.DataFrame:
+def good_units(units: pd.DataFrame, qc_column: str = "default_qc") -> pd.DataFrame:
     units = units[:]
     if units[qc_column].dtype != bool:
         raise NotImplementedError(

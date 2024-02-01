@@ -5,6 +5,7 @@ First created on Wed Aug 22 16:40:36 2018
 
 from the ecephys repo (https://github.com/AllenInstitute/ecephys_pipeline)
 """
+
 from __future__ import annotations
 
 import logging
