@@ -1,0 +1,17 @@
+{
+    "python.linting.mypyEnabled": true,
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": false,
+    "python.analysis.inlayHints.functionReturnTypes": true,
+    "python.analysis.typeCheckingMode": "off",
+    "workbench.colorCustomizations": {
+        "commandCenter.border": "#15202b99",
+        "panel.border": "#e2a580",
+        "sash.hoverBorder": "#e2a580",
+        "titleBar.activeBackground": "#d98756",
+        "titleBar.activeForeground": "#15202b",
+        "titleBar.inactiveBackground": "#d9875699",
+        "titleBar.inactiveForeground": "#15202b99"
+    },
+    "peacock.color": "#d98756"
+}
