@@ -395,7 +395,7 @@ def get_ephys_timing_on_sync(
     if devices and not isinstance(devices, Iterable):
         devices = (devices,)
 
-    if recording_dirs and not isinstance(recording_dirs, Iterable):
+    if recording_dirs and (isinstance(recording_dirs, str) or not isinstance(recording_dirs, Iterable)):
         recording_dirs = (recording_dirs,)
 
     if recording_dirs and not devices:
