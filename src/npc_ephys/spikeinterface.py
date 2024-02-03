@@ -247,7 +247,7 @@ class SpikeInterfaceKS25Data:
     @functools.cache
     def sorting_cached(self, probe: str) -> dict[str, npt.NDArray]:
         if not self.is_pre_v0_99:
-            raise NotImplementedError(
+            raise AttributeError(
                 "sorting_cached.npz not used for SpikeInterface>=0.99"
             )
         return np.load(
@@ -274,7 +274,7 @@ class SpikeInterfaceKS25Data:
     @functools.cache
     def numpysorting_info(self, probe: str) -> dict:
         if self.is_pre_v0_99:
-            raise NotImplementedError(
+            raise AttributeError(
                 "numpysorting_info.json not used for SpikeInterface<0.99"
             )
         return self.read_json(
@@ -285,9 +285,9 @@ class SpikeInterfaceKS25Data:
     def spikes_npy(self, probe: str) -> npt.NDArray[np.floating]:
         """format: array[(sample_index, unit_index, segment_index), ...]"""
         if self.is_pre_v0_99:
-            raise NotImplementedError("spikes.npy not used for SpikeInterface<0.99")
+            raise AttributeError("spikes.npy not used for SpikeInterface<0.99")
         if self.numpysorting_info(probe)["num_segments"] > 1:
-            raise NotImplementedError("num_segments > 1 not supported yet")
+            raise AttributeError("num_segments > 1 not supported yet")
         return np.load(
             io.BytesIO(
                 self.get_correct_path(self.curated(probe), "spikes.npy").read_bytes()
