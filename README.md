@@ -24,6 +24,36 @@ build tools to be installed: if `pip install npc_ephys` fails you'll likely need
 ## Python
 ```python
 >>> import npc_ephys
+
+# get device timing on sync clock using barcodes:
+>>> recording_path = 's3://aind-ephys-data/ecephys_670248_2023-08-03_12-04-15/ecephys_clipped/Record Node 102/experiment1/recording1'
+>>> sync_path = 's3://aind-ephys-data/ecephys_670248_2023-08-03_12-04-15/behavior/20230803T120415.h5'
+>>> timing_data = next(npc_ephys.get_ephys_timing_on_sync(sync_path, recording_path))
+>>> timing_data.device.name, timing_data.sampling_rate, timing_data.start_time
+('Neuropix-PXI-100.ProbeA-AP', 30000.070518634246, 20.080209634424037)
+
+# get a dataclass that reads SpikeInterface sorted data from the cloud
+# - from a path:
+>>> si = npc_ephys.get_spikeinterface_data('s3://codeocean-s3datasetsbucket-1u41qdg42ur9/4797cab2-9ea2-4747-8d15-5ba064837c1c')
+
+# - or from a subject ID + date + session-index-on-date (separators are optional):
+>>> si = npc_ephys.get_spikeinterface_data('670248_2023-08-03_0')
+
+>>> si
+SpikeInterfaceKS25Data(session='670248_2023-08-03_0', root=S3Path('s3://codeocean-s3datasetsbucket-1u41qdg42ur9/4797cab2-9ea2-4747-8d15-5ba064837c1c'))
+
+# various bits of data are available for use:
+>>> si.quality_metrics_df('probeA').columns
+Index(['num_spikes', 'firing_rate', 'presence_ratio', 'snr',
+        'isi_violations_ratio', 'isi_violations_count', 'rp_contamination',
+        'rp_violations', 'sliding_rp_violation', 'amplitude_cutoff',
+        'drift_ptp', 'drift_std', 'drift_mad', 'isolation_distance', 'l_ratio',
+        'd_prime'],
+        dtype='object')
+>>> si.spike_indexes('probeA')
+
+>>> si.unit_indexes('probeA')
+
 ```
 
 # Development
