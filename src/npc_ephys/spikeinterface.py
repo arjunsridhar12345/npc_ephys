@@ -75,11 +75,14 @@ class SpikeInterfaceKS25Data:
            'drift_ptp', 'drift_std', 'drift_mad', 'isolation_distance', 'l_ratio',
            'd_prime'],
           dtype='object')
-
     >>> si.version
     '0.97.1'
     >>> ''.join(si.probes)
     'ABCEF'
+    >>> si.spike_indexes('probeA')
+    array([      491,       738,       835, ..., 143124925, 143125165, 143125201])
+    >>> si.unit_indexes('probeA')
+    array([ 56,  61, 161, ..., 151,  72,  59])
     """
 
     session: str | npc_session.SessionRecord | None = None
