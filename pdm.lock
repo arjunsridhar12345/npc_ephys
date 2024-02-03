@@ -5,7 +5,7 @@
 groups = ["default", "dev", "docs"]
 strategy = ["cross_platform", "inherit_metadata"]
 lock_version = "4.4.1"
-content_hash = "sha256:4329db7f13473835d772213bbbf46b27a34a09b52d677b0ee109fdb66d4791c3"
+content_hash = "sha256:c00fb8037bd49574bbc5b9bb60bfda984307882f30f995daff006dd303bef698"
 
 [[package]]
 name = "aind-codeocean-api"
@@ -1457,19 +1457,20 @@ files = [
 
 [[package]]
 name = "mkdocs-git-revision-date-localized-plugin"
-version = "1.2.2"
-requires_python = ">=3.6"
+version = "1.2.3"
+requires_python = ">=3.8"
 summary = "Mkdocs plugin that enables displaying the localized date of the last git modification of a markdown file."
 groups = ["docs"]
 dependencies = [
     "GitPython",
     "babel>=2.7.0",
+    "markupsafe",
     "mkdocs>=1.0",
     "pytz",
 ]
 files = [
-    {file = "mkdocs-git-revision-date-localized-plugin-1.2.2.tar.gz", hash = "sha256:0c43a9aac1fa69df99a823f833cc223bac9967b60d5261a857761c7c6e3b30de"},
-    {file = "mkdocs_git_revision_date_localized_plugin-1.2.2-py3-none-any.whl", hash = "sha256:85c7fe9ab06e7a63c4e522c26fee8b51d357cb8cbe605064501ad80f4f31cb94"},
+    {file = "mkdocs-git-revision-date-localized-plugin-1.2.3.tar.gz", hash = "sha256:001bd95ad366a50992dfa5424d22c43da4e04921133e7af4792c98d266b7a189"},
+    {file = "mkdocs_git_revision_date_localized_plugin-1.2.3-py3-none-any.whl", hash = "sha256:0f1e8dc303a38fea23d5b7b5f3cb56d42624cb82833f2ce51a7c5ff0a1e78ab7"},
 ]
 
 [[package]]
@@ -1715,7 +1716,7 @@ files = [
 
 [[package]]
 name = "npc-lims"
-version = "0.1.115"
+version = "0.1.116"
 requires_python = ">=3.9"
 summary = "Tools to fetch and update paths, metadata and state for Mindscope Neuropixels sessions, in the cloud."
 groups = ["default"]
@@ -1737,8 +1738,8 @@ dependencies = [
     "universal-pathlib>=0.1.1",
 ]
 files = [
-    {file = "npc_lims-0.1.115-py3-none-any.whl", hash = "sha256:a2e1b16ffe7fc8fbf20eeb95f5f74f153004400de92812a91fd1d01a4436758d"},
-    {file = "npc_lims-0.1.115.tar.gz", hash = "sha256:ce37aa36be01e4b0ffbd4fc62c5bc1f4f084457e1a880637ea9eed93fea5ce61"},
+    {file = "npc_lims-0.1.116-py3-none-any.whl", hash = "sha256:09906236e8102a302f0a3917485757f9a149b84a4f07c29b502327176efb8484"},
+    {file = "npc_lims-0.1.116.tar.gz", hash = "sha256:c086142afff070ca37290622899d45425a5d900eabe01d627b8c14177198e7e1"},
 ]
 
 [[package]]
@@ -1757,7 +1758,7 @@ files = [
 
 [[package]]
 name = "npc-sync"
-version = "0.1.2"
+version = "0.1.5"
 requires_python = ">=3.9"
 summary = "Repackaging of AllenSDK.SyncDataset with extra functionality, compatible with data in the cloud."
 groups = ["default"]
@@ -1765,12 +1766,13 @@ dependencies = [
     "h5py>=3.10.0",
     "matplotlib>=3.8.2",
     "npc-io>=0.1.20",
+    "npc-session>=0.1.33",
     "numpy>=1.26.3",
     "typing-extensions>=4.9.0",
 ]
 files = [
-    {file = "npc-sync-0.1.2.tar.gz", hash = "sha256:21cbe107c222dc455fd6ffd3c88249278b1e7846bbeb98c7bb7c10b228cdf5e5"},
-    {file = "npc_sync-0.1.2-py3-none-any.whl", hash = "sha256:7ca8a843a7f95e0645f2392808eeab1317c0aed02ed3edf89ea3d2ad6a55df0c"},
+    {file = "npc-sync-0.1.5.tar.gz", hash = "sha256:faa9ad30754e6c3d0cbb5b59fdb735d1fbc4a677e70e1ea0a640e25f3f2c2911"},
+    {file = "npc_sync-0.1.5-py3-none-any.whl", hash = "sha256:f2e95bca585de28506a7f76a0740c996e4491dfcd4444c07db980ca20a27576f"},
 ]
 
 [[package]]
@@ -2476,28 +2478,28 @@ files = [
 
 [[package]]
 name = "ruff"
-version = "0.1.15"
+version = "0.2.0"
 requires_python = ">=3.7"
 summary = "An extremely fast Python linter and code formatter, written in Rust."
 groups = ["dev"]
 files = [
-    {file = "ruff-0.1.15-py3-none-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl", hash = "sha256:5fe8d54df166ecc24106db7dd6a68d44852d14eb0729ea4672bb4d96c320b7df"},
-    {file = "ruff-0.1.15-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:6f0bfbb53c4b4de117ac4d6ddfd33aa5fc31beeaa21d23c45c6dd249faf9126f"},
-    {file = "ruff-0.1.15-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:e0d432aec35bfc0d800d4f70eba26e23a352386be3a6cf157083d18f6f5881c8"},
-    {file = "ruff-0.1.15-py3-none-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:9405fa9ac0e97f35aaddf185a1be194a589424b8713e3b97b762336ec79ff807"},
-    {file = "ruff-0.1.15-py3-none-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:c66ec24fe36841636e814b8f90f572a8c0cb0e54d8b5c2d0e300d28a0d7bffec"},
-    {file = "ruff-0.1.15-py3-none-manylinux_2_17_ppc64.manylinux2014_ppc64.whl", hash = "sha256:6f8ad828f01e8dd32cc58bc28375150171d198491fc901f6f98d2a39ba8e3ff5"},
-    {file = "ruff-0.1.15-py3-none-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:86811954eec63e9ea162af0ffa9f8d09088bab51b7438e8b6488b9401863c25e"},
-    {file = "ruff-0.1.15-py3-none-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:fd4025ac5e87d9b80e1f300207eb2fd099ff8200fa2320d7dc066a3f4622dc6b"},
-    {file = "ruff-0.1.15-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b17b93c02cdb6aeb696effecea1095ac93f3884a49a554a9afa76bb125c114c1"},
-    {file = "ruff-0.1.15-py3-none-musllinux_1_2_aarch64.whl", hash = "sha256:ddb87643be40f034e97e97f5bc2ef7ce39de20e34608f3f829db727a93fb82c5"},
-    {file = "ruff-0.1.15-py3-none-musllinux_1_2_armv7l.whl", hash = "sha256:abf4822129ed3a5ce54383d5f0e964e7fef74a41e48eb1dfad404151efc130a2"},
-    {file = "ruff-0.1.15-py3-none-musllinux_1_2_i686.whl", hash = "sha256:6c629cf64bacfd136c07c78ac10a54578ec9d1bd2a9d395efbee0935868bf852"},
-    {file = "ruff-0.1.15-py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:1bab866aafb53da39c2cadfb8e1c4550ac5340bb40300083eb8967ba25481447"},
-    {file = "ruff-0.1.15-py3-none-win32.whl", hash = "sha256:2417e1cb6e2068389b07e6fa74c306b2810fe3ee3476d5b8a96616633f40d14f"},
-    {file = "ruff-0.1.15-py3-none-win_amd64.whl", hash = "sha256:3837ac73d869efc4182d9036b1405ef4c73d9b1f88da2413875e34e0d6919587"},
-    {file = "ruff-0.1.15-py3-none-win_arm64.whl", hash = "sha256:9a933dfb1c14ec7a33cceb1e49ec4a16b51ce3c20fd42663198746efc0427360"},
-    {file = "ruff-0.1.15.tar.gz", hash = "sha256:f6dfa8c1b21c913c326919056c390966648b680966febcb796cc9d1aaab8564e"},
+    {file = "ruff-0.2.0-py3-none-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl", hash = "sha256:638ea3294f800d18bae84a492cb5a245c8d29c90d19a91d8e338937a4c27fca0"},
+    {file = "ruff-0.2.0-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:3ff35433fcf4dff6d610738712152df6b7d92351a1bde8e00bd405b08b3d5759"},
+    {file = "ruff-0.2.0-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:bf9faafbdcf4f53917019f2c230766da437d4fd5caecd12ddb68bb6a17d74399"},
+    {file = "ruff-0.2.0-py3-none-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:8153a3e4128ed770871c47545f1ae7b055023e0c222ff72a759f5a341ee06483"},
+    {file = "ruff-0.2.0-py3-none-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:e8a75a98ae989a27090e9c51f763990ad5bbc92d20626d54e9701c7fe597f399"},
+    {file = "ruff-0.2.0-py3-none-manylinux_2_17_ppc64.manylinux2014_ppc64.whl", hash = "sha256:87057dd2fdde297130ff99553be8549ca38a2965871462a97394c22ed2dfc19d"},
+    {file = "ruff-0.2.0-py3-none-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:6d232f99d3ab00094ebaf88e0fb7a8ccacaa54cc7fa3b8993d9627a11e6aed7a"},
+    {file = "ruff-0.2.0-py3-none-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:3d3c641f95f435fc6754b05591774a17df41648f0daf3de0d75ad3d9f099ab92"},
+    {file = "ruff-0.2.0-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:3826fb34c144ef1e171b323ed6ae9146ab76d109960addca730756dc19dc7b22"},
+    {file = "ruff-0.2.0-py3-none-musllinux_1_2_aarch64.whl", hash = "sha256:eceab7d85d09321b4de18b62d38710cf296cb49e98979960a59c6b9307c18cfe"},
+    {file = "ruff-0.2.0-py3-none-musllinux_1_2_armv7l.whl", hash = "sha256:30ad74687e1f4a9ff8e513b20b82ccadb6bd796fe5697f1e417189c5cde6be3e"},
+    {file = "ruff-0.2.0-py3-none-musllinux_1_2_i686.whl", hash = "sha256:a7e3818698f8460bd0f8d4322bbe99db8327e9bc2c93c789d3159f5b335f47da"},
+    {file = "ruff-0.2.0-py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:edf23041242c48b0d8295214783ef543847ef29e8226d9f69bf96592dba82a83"},
+    {file = "ruff-0.2.0-py3-none-win32.whl", hash = "sha256:e155147199c2714ff52385b760fe242bb99ea64b240a9ffbd6a5918eb1268843"},
+    {file = "ruff-0.2.0-py3-none-win_amd64.whl", hash = "sha256:ba918e01cdd21e81b07555564f40d307b0caafa9a7a65742e98ff244f5035c59"},
+    {file = "ruff-0.2.0-py3-none-win_arm64.whl", hash = "sha256:3fbaff1ba9564a2c5943f8f38bc221f04bac687cc7485e45237579fee7ccda79"},
+    {file = "ruff-0.2.0.tar.gz", hash = "sha256:63856b91837606c673537d2889989733d7dffde553828d3b0f0bacfa6def54be"},
 ]
 
 [[package]]
