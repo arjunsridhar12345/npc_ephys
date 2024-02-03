@@ -61,14 +61,14 @@ class SpikeInterfaceKS25Data:
     files and dirs.
 
     Provide a session ID or a root path:
-    >>> paths = SpikeInterfaceKS25Data('668759_20230711')
-    >>> paths.root
+    >>> si = SpikeInterfaceKS25Data('668759_20230711')
+    >>> si.root
     S3Path('s3://codeocean-s3datasetsbucket-1u41qdg42ur9/4797cab2-9ea2-4747-8d15-5ba064837c1c')
 
-    >>> paths.template_metrics_dict('probeA')
+    >>> si.template_metrics_dict('probeA')
     {'metric_names': ['peak_to_valley', 'peak_trough_ratio', 'half_width', 'repolarization_slope', 'recovery_slope'], 'sparsity': None, 'peak_sign': 'neg', 'upsampling_factor': 10, 'window_slope_ms': 0.7}
 
-    >>> paths.quality_metrics_df('probeA').columns
+    >>> si.quality_metrics_df('probeA').columns
     Index(['num_spikes', 'firing_rate', 'presence_ratio', 'snr',
            'isi_violations_ratio', 'isi_violations_count', 'rp_contamination',
            'rp_violations', 'sliding_rp_violation', 'amplitude_cutoff',
@@ -76,9 +76,9 @@ class SpikeInterfaceKS25Data:
            'd_prime'],
           dtype='object')
 
-    >>> paths.version
+    >>> si.version
     '0.97.1'
-    >>> ''.join(paths.probes)
+    >>> ''.join(si.probes)
     'ABCEF'
     """
 
