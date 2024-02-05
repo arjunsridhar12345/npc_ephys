@@ -676,7 +676,7 @@ def get_merged_oebin_file(
         paths = tuple(paths)
     oebin_paths = tuple(npc_io.from_pathlike(p) for p in paths)
     if len(oebin_paths) == 1:
-        return read_oebin(oebin_paths[0])
+        return get_oebin_data(oebin_paths[0])
 
     # ensure oebin files can be merged - if from the same exp they will have the same settings.xml file
     if any(p.suffix != ".oebin" for p in oebin_paths):
@@ -688,7 +688,7 @@ def get_merged_oebin_file(
     logger.debug(f"Creating merged oebin file from {oebin_paths}")
     merged_oebin: dict = {}
     for oebin_path in sorted(oebin_paths):
-        oebin_data = read_oebin(oebin_path)
+        oebin_data = get_oebin_data(oebin_path)
 
         for key in oebin_data:
             # skip if already in merged oebin
@@ -717,11 +717,49 @@ def get_merged_oebin_file(
     return merged_oebin
 
 
-def read_oebin(
+def get_oebin_data(
     path: npc_io.PathLike,
 ) -> dict[Literal["continuous", "events", "spikes"], list[dict[str, Any]]]:
     return json.loads(npc_io.from_pathlike(path).read_text())
 
+
+def validate_recording_folder(
+    recording_path: npc_io.PathLike,
+    sync_path_or_dataset: npc_sync.SyncPathOrDataset | None = None,
+    ) -> None:
+    sync = npc_sync.get_sync_data(sync_path_or_dataset) if sync_path_or_dataset else None
+    recording_path = npc_io.from_pathlike(recording_path)
+    logging.debug(f"Validating ephys data in {recording_path}")
+
+    for device in get_oebin_data(recording_path / "structure.oebin")["continuous"]:
+        device_name = device["folder_name"].strip("/")
+        try:
+            info = next(get_ephys_timing_on_pxi(recording_path, only_devices_including=device_name))
+        except StopIteration:
+            raise AssertionError(f"Could not find {device_name} data in {recording_path}")
+        if sync:
+            try:
+                _ = get_ephys_timing_on_sync(sync, devices=(info,))
+            except Exception as exc:
+                raise AssertionError(f"Could not validate {info.device.name} with sync") from exc
+        logging.debug(f"Validated {info.device.name} {'with' if sync else 'without'} sync")
+
+
+def validate(
+    root_paths: npc_io.PathLike | Iterable[npc_io.PathLike],
+    sync_path_or_dataset: npc_sync.SyncPathOrDataset | None = None,
+    ignore_small_folders: bool = True,
+) -> None:
+    """
+    >>> root = upath.UPath('s3://aind-ephys-data/ecephys_670248_2023-08-03_12-04-15/ecephys_clipped')
+    >>> sync = upath.UPath('s3://aind-ephys-data/ecephys_670248_2023-08-03_12-04-15/behavior/20230803T120415.h5')
+    >>> validate(root, sync)
+    """
+    for root in npc_io.iterable_from_pathlikes(root_paths):
+        oebin_paths = (get_single_oebin_path(root), ) if ignore_small_folders else root.rglob("structure.oebin")
+        for p in oebin_paths:
+            validate_recording_folder(p.parent, sync_path_or_dataset=sync_path_or_dataset)
+        logging.info(f"Validated ephys data in {root}")
 
 if __name__ == "__main__":
     from npc_ephys import testmod

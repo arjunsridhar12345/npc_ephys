@@ -13,6 +13,7 @@ dependencies = [
     "tqdm>=4.66.1",
     "npc-lims>=0.1.115",
     "wavpack-numcodecs>=0.1.5",
+    "npc-io>=0.1.23",
 ]
 version = "0.1.2"
 classifiers = [
