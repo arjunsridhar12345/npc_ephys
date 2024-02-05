@@ -395,7 +395,9 @@ def get_ephys_timing_on_sync(
     if devices and not isinstance(devices, Iterable):
         devices = (devices,)
 
-    if recording_dirs and (isinstance(recording_dirs, str) or not isinstance(recording_dirs, Iterable)):
+    if recording_dirs and (
+        isinstance(recording_dirs, str) or not isinstance(recording_dirs, Iterable)
+    ):
         recording_dirs = (recording_dirs,)
 
     if recording_dirs and not devices:
@@ -726,23 +728,35 @@ def get_oebin_data(
 def validate_recording_folder(
     recording_path: npc_io.PathLike,
     sync_path_or_dataset: npc_sync.SyncPathOrDataset | None = None,
-    ) -> None:
-    sync = npc_sync.get_sync_data(sync_path_or_dataset) if sync_path_or_dataset else None
+) -> None:
+    sync = (
+        npc_sync.get_sync_data(sync_path_or_dataset) if sync_path_or_dataset else None
+    )
     recording_path = npc_io.from_pathlike(recording_path)
     logging.debug(f"Validating ephys data in {recording_path}")
 
     for device in get_oebin_data(recording_path / "structure.oebin")["continuous"]:
         device_name = device["folder_name"].strip("/")
         try:
-            info = next(get_ephys_timing_on_pxi(recording_path, only_devices_including=device_name))
+            info = next(
+                get_ephys_timing_on_pxi(
+                    recording_path, only_devices_including=device_name
+                )
+            )
         except StopIteration:
-            raise AssertionError(f"Could not find {device_name} data in {recording_path}")
+            raise AssertionError(
+                f"Could not find {device_name} data in {recording_path}"
+            )
         if sync:
             try:
                 _ = get_ephys_timing_on_sync(sync, devices=(info,))
             except Exception as exc:
-                raise AssertionError(f"Could not validate {info.device.name} with sync") from exc
-        logging.debug(f"Validated {info.device.name} {'with' if sync else 'without'} sync")
+                raise AssertionError(
+                    f"Could not validate {info.device.name} with sync"
+                ) from exc
+        logging.debug(
+            f"Validated {info.device.name} {'with' if sync else 'without'} sync"
+        )
 
 
 def validate(
@@ -756,10 +770,17 @@ def validate(
     >>> validate(root, sync)
     """
     for root in npc_io.iterable_from_pathlikes(root_paths):
-        oebin_paths = (get_single_oebin_path(root), ) if ignore_small_folders else root.rglob("structure.oebin")
+        oebin_paths = (
+            (get_single_oebin_path(root),)
+            if ignore_small_folders
+            else root.rglob("structure.oebin")
+        )
         for p in oebin_paths:
-            validate_recording_folder(p.parent, sync_path_or_dataset=sync_path_or_dataset)
+            validate_recording_folder(
+                p.parent, sync_path_or_dataset=sync_path_or_dataset
+            )
         logging.info(f"Validated ephys data in {root}")
+
 
 if __name__ == "__main__":
     from npc_ephys import testmod

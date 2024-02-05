@@ -250,9 +250,7 @@ class SpikeInterfaceKS25Data:
     @functools.cache
     def sorting_cached(self, probe: str) -> dict[str, npt.NDArray]:
         if not self.is_pre_v0_99:
-            raise AttributeError(
-                "sorting_cached.npz not used for SpikeInterface>=0.99"
-            )
+            raise AttributeError("sorting_cached.npz not used for SpikeInterface>=0.99")
         return np.load(
             io.BytesIO(
                 self.get_correct_path(
