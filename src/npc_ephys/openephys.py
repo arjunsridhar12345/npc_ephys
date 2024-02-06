@@ -261,11 +261,17 @@ def clipped_path_to_compressed(path: npc_io.PathLike) -> upath.UPath:
     root_path = next(p for p in path.parents if p.name == "ecephys_clipped")
     # cannot construct S3Path de novo from a string including `#`, but we can return
     # the actual path that exists
-    return next(
-        path
-        for path in root_path.with_name("ecephys_compressed").iterdir()
-        if path.name == compressed_name
+    compressed_path = next(
+        (
+            path
+            for path in root_path.with_name("ecephys_compressed").iterdir()
+            if path.name == compressed_name
+        ),
+        None
     )
+    if compressed_path is None:
+        raise FileNotFoundError(f"Could not find {compressed_name} in {root_path}")
+    return compressed_path
 
 
 def get_ephys_data(
