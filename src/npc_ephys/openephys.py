@@ -267,7 +267,7 @@ def clipped_path_to_compressed(path: npc_io.PathLike) -> upath.UPath:
             for path in root_path.with_name("ecephys_compressed").iterdir()
             if path.name == compressed_name
         ),
-        None
+        None,
     )
     if compressed_path is None:
         raise FileNotFoundError(f"Could not find {compressed_name} in {root_path}")
