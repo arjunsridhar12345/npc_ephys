@@ -765,7 +765,7 @@ def validate_recording_folder(
         )
 
 
-def validate(
+def validate_ephys(
     root_paths: npc_io.PathLike | Iterable[npc_io.PathLike],
     sync_path_or_dataset: npc_sync.SyncPathOrDataset | None = None,
     ignore_small_folders: bool = True,
@@ -773,7 +773,7 @@ def validate(
     """
     >>> root = upath.UPath('s3://aind-ephys-data/ecephys_670248_2023-08-03_12-04-15/ecephys_clipped')
     >>> sync = upath.UPath('s3://aind-ephys-data/ecephys_670248_2023-08-03_12-04-15/behavior/20230803T120415.h5')
-    >>> validate(root, sync)
+    >>> validate_ephys(root, sync)
     """
     for root in npc_io.iterable_from_pathlikes(root_paths):
         oebin_paths = (
