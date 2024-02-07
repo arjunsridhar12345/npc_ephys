@@ -150,7 +150,7 @@ def find_matching_index(
     (2, -1)
     >>> find_matching_index(np.array([1, 2, 3]), np.array([4, 5, 6]), alignment_type="start")
     (None, None)
-    
+
     # in cases of multiple matches (affecting 626791_2022-08-16)
     >>> find_matching_index(np.array([1, 1, 2]), np.array([1, 1, 2]), alignment_type="start")
     (0, 0)
@@ -179,20 +179,27 @@ def find_matching_index(
         master_barcode_index = np.where(
             master_barcodes == probe_barcodes[probe_barcode_index]
         )[0]
-        if len(master_barcode_index) > 1: # multiple matches only happened once, in 626791_2022-08-16
+        if (
+            len(master_barcode_index) > 1
+        ):  # multiple matches only happened once, in 626791_2022-08-16
             # check whether two instances are also found on the probe:
-            if probe_barcodes[probe_barcode_index] not in (0, 1, 2, 2154270975): # tests and known barcode that has multiple matches
+            if probe_barcodes[probe_barcode_index] not in (
+                0,
+                1,
+                2,
+                2154270975,
+            ):  # tests and known barcode that has multiple matches
                 logger.warning(
                     f"Multiple barcode matches found on sync clock: {master_barcode_index=}. "
                     "Using most sensible match, but if this happens frequently there's probably a bug."
                 )
             duplicates_on_probe = np.where(
-                    probe_barcodes == probe_barcodes[probe_barcode_index]
-                )[0]
+                probe_barcodes == probe_barcodes[probe_barcode_index]
+            )[0]
             if alignment_type == "start":
-                duplicates_on_master = master_barcode_index[-len(duplicates_on_probe):]
+                duplicates_on_master = master_barcode_index[-len(duplicates_on_probe) :]
             else:
-                duplicates_on_master = master_barcode_index[:len(duplicates_on_probe)]
+                duplicates_on_master = master_barcode_index[: len(duplicates_on_probe)]
             master_barcode_index = np.array(
                 [duplicates_on_master[0 if alignment_type == "start" else -1]]
             )
