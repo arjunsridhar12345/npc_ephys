@@ -358,7 +358,9 @@ def get_probe_time_offset(
         master_times, master_barcodes, probe_times, probe_barcodes
     )
     if any(x is None for x in (*probe_endpoints, *master_endpoints)):
-        raise ValueError(f"Matching barcodes not found: {probe_endpoints=}, {master_endpoints=}")
+        raise ValueError(
+            f"Matching barcodes not found: {probe_endpoints=}, {master_endpoints=}"
+        )
     rate_scale, time_offset = linear_transform_from_intervals(
         master_endpoints, probe_endpoints
     )
