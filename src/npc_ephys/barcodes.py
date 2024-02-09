@@ -259,7 +259,7 @@ def match_barcodes(
     # print(probe_barcodes)
 
     # print("Master start index: " + str(master_start_index))
-    if len(probe_barcodes) > 2:
+    if len(probe_barcodes) > 1:
         master_end_index, probe_end_index = find_matching_index(
             master_barcodes, probe_barcodes, alignment_type="end"
         )
@@ -357,6 +357,8 @@ def get_probe_time_offset(
     probe_endpoints, master_endpoints = match_barcodes(
         master_times, master_barcodes, probe_times, probe_barcodes
     )
+    if any(x is None for x in (*probe_endpoints, *master_endpoints)):
+        raise ValueError(f"Matching barcodes not found: {probe_endpoints=}, {master_endpoints=}")
     rate_scale, time_offset = linear_transform_from_intervals(
         master_endpoints, probe_endpoints
     )
