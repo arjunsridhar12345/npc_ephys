@@ -755,7 +755,7 @@ def validate_recording_folder(
             )
         if sync:
             try:
-                _ = get_ephys_timing_on_sync(sync, devices=(info,))
+                _ = next(get_ephys_timing_on_sync(sync, devices=(info,)))
             except Exception as exc:
                 raise AssertionError(
                     f"Could not validate {info.device.name} with sync"
