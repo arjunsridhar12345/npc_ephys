@@ -15,6 +15,7 @@ import tqdm
 import npc_ephys.openephys
 import npc_ephys.spikeinterface
 
+
 logger = logging.getLogger(__name__)
 
 
@@ -51,8 +52,7 @@ class AmplitudesWaveformsChannels(NamedTuple):
 
 def get_amplitudes_waveforms_channels_ks25(
     spike_interface_data: npc_ephys.spikeinterface.SpikeInterfaceKS25Data,
-    electrode_group_name: str,
-    sampling_rate: float,
+    electrode_group_name: str
 ) -> AmplitudesWaveformsChannels:
     unit_amplitudes: list[np.floating] = []
     templates_mean: list[npt.NDArray[np.floating]] = []
@@ -60,43 +60,33 @@ def get_amplitudes_waveforms_channels_ks25(
     peak_channels: list[np.intp] = []
     channels: list[tuple[np.intp, ...]] = []
 
-    # nbefore sets the sample index (in each waveform timeseries) at which to
-    # extract values -> the timeseries with the highest value becomes the peak channel
-    """
-    @property
-    def nbefore(self) -> int:
-        nbefore = int(self._params["ms_before"] * self.sampling_frequency / 1000.0)
-        return nbefore
-    """
     sparse_channel_indices = spike_interface_data.sparse_channel_indices(
         electrode_group_name
     )
     _templates_mean = spike_interface_data.templates_average(electrode_group_name)
     _templates_sd = spike_interface_data.templates_std(electrode_group_name)
 
-    # https://github.com/SpikeInterface/spikeinterface/blob/777a07d3a538394d52a18a05662831a403ee35f9/src/spikeinterface/core/template_tools.py#L8
-    nbefore = int(
-        spike_interface_data.postprocessed_params_dict(electrode_group_name)[
-            "ms_before"
-        ]
-        * sampling_rate
-        / 1000.0
-    )  # from spike interface, ms_before = 3,
+    sparse_channel_indices = spike_interface_data.sparse_channel_indices(electrode_group_name)
+    assert len(sparse_channel_indices) == _templates_mean.shape[2], f"Expected {len(sparse_channel_indices)=} channels to match {_templates_mean.shape[2]=}"
+
     for unit_index in range(_templates_mean.shape[0]):
         # TODO replace this section when annotations are updated
         # - ---------------------------------------------------------------- #
         _mean = _templates_mean[unit_index, :, :]
-        values = -_mean[nbefore, :]
-        peak_channel = np.argmax(values)
-        unit_amplitudes.append(values[peak_channel])
-        # emailed Josh to see how he was getting peak channel - using waveforms, peak channel might be part of metrics in future
+   
+        pk_to_pk = np.max(_mean, axis=0) - np.min(_mean, axis=0) # use same method as Allen ecephys pipeline
+        # https://github.com/bjhardcastle/ecephys_spike_sorting/blob/7e567a6fc3fd2fc0eedef750b83b8b8a0d469544/ecephys_spike_sorting/modules/mean_waveforms/extract_waveforms.py#L87
+        peak_channel = sparse_channel_indices[m := np.argmax(pk_to_pk)]
+        unit_amplitudes.append(pk_to_pk[m].item())
+        templates_mean.append(_mean)
+
         _sd = _templates_sd[unit_index, :, :]
         # - ---------------------------------------------------------------- #
         idx = np.where(_mean.any(axis=0))[0]
         very_sparse_channel_indices = np.array(sparse_channel_indices)[idx]
         templates_mean.append(_mean[:, idx])
         templates_sd.append(_sd[:, idx])
-        peak_channels.append(peak_channel)
+        peak_channels.append(np.intp(peak_channel))
         logger.debug(f"very_sparse_channel_indices: {very_sparse_channel_indices}")
         channels.append(tuple(idx))  # TODO switch to very_sparse_channel_indices
 
@@ -169,7 +159,6 @@ def _device_helper(
     awc = get_amplitudes_waveforms_channels_ks25(
         spike_interface_data=spike_interface_data,
         electrode_group_name=electrode_group_name,
-        sampling_rate=device_timing_on_sync.sampling_rate,
     )
 
     df_device_metrics["peak_channel"] = awc.peak_channels
