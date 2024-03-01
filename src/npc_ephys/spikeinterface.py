@@ -108,7 +108,7 @@ class SpikeInterfaceKS25Data:
         if "parent_sorting" in self.provenance(self.probes[0])["kwargs"]:
             return self.provenance(self.probes[0])["kwargs"]["parent_sorting"]["version"]
         else: # new sorting pipeline
-            return self.provenance(self.probes[0])["version"]
+            return "0.99" # hack, new output has 0.100
 
     @property
     def is_pre_v0_99(self) -> bool:
